@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_demo/features/home/views/home_screen.dart';
-import 'package:flutter_demo/services/navigation_service.dart';
+import 'package:flutter_demo/core/services/navigation_service.dart';
 
 void main() {
   runApp(const MyApp());
