@@ -1,6 +1,7 @@
 import 'package:dio/dio.dart';
-import 'package:flutter_demo/utils/constants/enums.dart';
 import 'package:flutter_demo/utils/constants/env.dart';
+
+enum HTTPMethod { get, post, delete, patch, put }
 
 // Class for configuring Dio instance
 class DioService {
@@ -14,7 +15,7 @@ class DioService {
     return _instance!; // Return the instance
   }
 
-  late Dio? _dio; // Dio instance variable
+  Dio? _dio; // Dio instance variable
 
   // Dio instance getter
   Dio get dio {
