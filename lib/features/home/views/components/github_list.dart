@@ -44,46 +44,51 @@ class _GithubListWidgetState extends State<GithubListWidget> {
   Widget build(BuildContext context) {
     return Obx(() {
       return DataStateViewWidget(
-        success: ListView.builder(
-          controller: scrollController,
-          padding: const EdgeInsets.all(10),
-          itemCount: _controller.githubProjectList.length,
-          itemBuilder: (_, index) {
-            final item = _controller.githubProjectList[index];
+        success: _controller.githubProjectList.isEmpty
+            ? const Text("No githup project found!")
+            : ListView.builder(
+                controller: scrollController,
+                padding: const EdgeInsets.all(10),
+                itemCount: _controller.githubProjectList.length,
+                itemBuilder: (_, index) {
+                  final item = _controller.githubProjectList[index];
 
-            return Column(
-              children: [
-                InkWell(
-                  onTap: () {
-                    Get.to(GithubDetailsScreen(
-                      item: item,
-                    ));
-                  },
-                  child: Column(
+                  return Column(
                     children: [
-                      Container(
-                        width: double.infinity,
-                        margin: const EdgeInsets.only(bottom: 10),
-                        padding: const EdgeInsets.all(10),
-                        decoration: BoxDecoration(color: Colors.grey[200]),
+                      InkWell(
+                        onTap: () {
+                          Get.to(GithubDetailsScreen(
+                            item: item,
+                          ));
+                        },
                         child: Column(
                           children: [
-                            Text(item.name ?? "N/A"),
-                            // Text(item?.),
-                            Text("owner name: ${item.owner?.login}"),
-                            Text("Star: ${item.stargazersCount}"),
+                            Container(
+                              width: double.infinity,
+                              margin: const EdgeInsets.only(bottom: 10),
+                              padding: const EdgeInsets.all(10),
+                              decoration:
+                                  BoxDecoration(color: Colors.grey[200]),
+                              child: Column(
+                                children: [
+                                  Text(item.name ?? "N/A"),
+                                  // Text(item?.),
+                                  Text("owner name: ${item.owner?.login}"),
+                                  Text("Star: ${item.stargazersCount}"),
+                                ],
+                              ),
+                            ),
+                            if (_controller.githubProjectList.length - 1 ==
+                                    index &&
+                                !_controller.isFullyLoaded.value)
+                              const LoadingWidget(),
                           ],
                         ),
                       ),
-                      if (_controller.githubProjectList.length - 1 == index)
-                        const LoadingWidget(),
                     ],
-                  ),
-                ),
-              ],
-            );
-          },
-        ),
+                  );
+                },
+              ),
         viewState: _controller.viewState.value,
         errorMessage: _controller.errorMsg(),
       );

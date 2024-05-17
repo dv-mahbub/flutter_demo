@@ -1,4 +1,5 @@
 import 'package:dio/dio.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter_demo/utils/constants/env.dart';
 
 enum HTTPMethod { get, post, delete, patch, put }
@@ -36,6 +37,15 @@ class DioService {
         },
         onError: (DioException error, handler) async {
           // Function to handle error
+          if (kDebugMode) {
+            print("❗️======Dio error print start=====❗️");
+            print("= = = Dio Error Response = = =");
+            print('Error Response: ${error.response}');
+            print('Error Message: ${error.message}');
+            print('Error Type: ${error.type}');
+            print('Error StausCode: ${error.response?.statusCode}');
+            print("❗️======Dio error print end=====❗️");
+          }
           return handler.next(error); // Pass error to next handler
         },
         onResponse: (Response response, handler) {
