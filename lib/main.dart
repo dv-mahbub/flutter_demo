@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_demo/features/home/views/home_screen.dart';
-import 'package:flutter_demo/core/services/navigation_service.dart';
+
+import 'package:get/route_manager.dart';
+
+import 'core/bindings/initial_bindings.dart';
+import 'utils/routes/app_pages.dart';
+import 'utils/routes/app_routes.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -11,9 +16,10 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      navigatorKey: NavigationService.key,
-      home: const HomeScreen(),
+    return GetMaterialApp(
+      initialRoute: Routes.home,
+      getPages: pages,
+      initialBinding: InitialBindings(),
     );
   }
 }

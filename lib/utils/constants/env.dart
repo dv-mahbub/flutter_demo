@@ -1,3 +1,3 @@
 class APPENV {
-  static const baseURl = "";
+  static const baseURl = "https://api.github.com/";
 }

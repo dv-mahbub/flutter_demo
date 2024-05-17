@@ -1,8 +1,9 @@
 import 'package:dio/dio.dart';
 import 'package:flutter_demo/core/models/view_state.dart';
+import 'package:get/get.dart';
 
-abstract class BaseController {
-  ViewState viewState = ViewState.initial;
+abstract class BaseController extends GetxController {
+  Rx<ViewState> viewState = ViewState.initial.obs;
   Object? _exception;
   Object? get exception {
     return _exception;
@@ -10,7 +11,7 @@ abstract class BaseController {
 
   set setException(Object? name) {
     _exception = name;
-    viewState = ViewState.error;
+    viewState.value = ViewState.error;
   }
 
   String errorMsg() {
