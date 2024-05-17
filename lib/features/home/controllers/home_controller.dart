@@ -12,29 +12,40 @@ class HomeController extends BaseController {
   // Constructor to initialize the repository
   HomeController(this._githubProjectRepository);
 
-  // Model to hold GitHub project data
-  GithubProjectModel? githubProjectModel;
+  // Observable list to store GitHub project items
+  final RxList<GithubItem> githubProjectList = <GithubItem>[].obs;
 
   // Observable to track the current page for pagination
-  var currentPage = 1.obs;
-  RxBool isFullyLoaded = false.obs;
+  final RxInt currentPage = 1.obs;
+
+  // Observable to track if all pages are fully loaded
+  final RxBool isFullyLoaded = false.obs;
+
+  @override
+  void onInit() {
+    // Fetch projects when the controller is initialized
+    fetchGithubFlutterProjects();
+    super.onInit();
+  }
+
   // Method to fetch GitHub Flutter projects
-  Future<void> getGithubFlutterProjects() async {
+  Future<void> fetchGithubFlutterProjects() async {
     try {
-      viewState.value = ViewState.loading;
       // Fetch projects from the repository based on the current page
       final githubResponse =
           await _githubProjectRepository.searchGithubProject(currentPage.value);
-      if (githubResponse?.items == null && githubResponse!.items!.isEmpty) {
+
+      // Check if the response is null or contains no items
+      if (githubResponse == null ||
+          githubResponse.items == null ||
+          githubResponse.items!.isEmpty) {
+        viewState.value = ViewState.empty;
         isFullyLoaded.value = true;
+        return;
       }
-      // If the model is null, initialize it with the response
-      // Otherwise, append new items to the existing list
-      if (githubProjectModel == null) {
-        githubProjectModel = githubResponse;
-      } else {
-        githubProjectModel?.items?.addAll(githubResponse!.items!);
-      }
+
+      // Append new items to the existing list
+      githubProjectList.addAll(githubResponse.items!);
 
       // Update the view state to loaded
       viewState.value = ViewState.loaded;
@@ -43,15 +54,12 @@ class HomeController extends BaseController {
       currentPage.value++;
     } catch (e) {
       // Print error and set the exception in case of failure
-      e.toString().printError();
+      printError('Failed to fetch GitHub projects: $e');
       setException = e;
     }
   }
 
-  @override
-  void onInit() {
-    // Fetch projects when the controller is initialized
-    getGithubFlutterProjects();
-    super.onInit();
+  void printError(String message) {
+    message.printError();
   }
 }

@@ -9,7 +9,7 @@ String githubProjectModelToJson(GithubProjectModel data) =>
 class GithubProjectModel {
   int? totalCount;
   bool? incompleteResults;
-  List<Item>? items;
+  List<GithubItem>? items;
 
   GithubProjectModel({
     this.totalCount,
@@ -23,7 +23,8 @@ class GithubProjectModel {
         incompleteResults: json["incomplete_results"],
         items: json["items"] == null
             ? []
-            : List<Item>.from(json["items"]!.map((x) => Item.fromJson(x))),
+            : List<GithubItem>.from(
+                json["items"]!.map((x) => GithubItem.fromJson(x))),
       );
 
   Map<String, dynamic> toJson() => {
@@ -35,7 +36,7 @@ class GithubProjectModel {
       };
 }
 
-class Item {
+class GithubItem {
   int? id;
   String? nodeId;
   String? name;
@@ -117,7 +118,7 @@ class Item {
   String? defaultBranch;
   int? score;
 
-  Item({
+  GithubItem({
     this.id,
     this.nodeId,
     this.name,
@@ -200,7 +201,7 @@ class Item {
     this.score,
   });
 
-  factory Item.fromJson(Map<String, dynamic> json) => Item(
+  factory GithubItem.fromJson(Map<String, dynamic> json) => GithubItem(
         id: json["id"],
         nodeId: json["node_id"],
         name: json["name"],

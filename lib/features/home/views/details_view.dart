@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_demo/features/home/data/models/github_project_model.dart';
 
 class GithubDetailsScreen extends StatelessWidget {
-  final Item? item;
+  final GithubItem? item;
   const GithubDetailsScreen({super.key, required this.item});
 
   @override
