@@ -26,7 +26,7 @@ class HomeController extends BaseController {
       final githubResponse =
           await _githubProjectRepository.searchGithubProject(currentPage.value);
       if (githubResponse?.items == null && githubResponse!.items!.isEmpty) {
-        isFullyLoaded.value = false;
+        isFullyLoaded.value = true;
       }
       // If the model is null, initialize it with the response
       // Otherwise, append new items to the existing list
